@@ -94,6 +94,13 @@ Arquivos criados e alterados:
 - O CI geral desse run mostrou falhas nos jobs `CI` e `npm Package Smoke`; E2E estavam em andamento na consulta. Não afirmar suite verde.
 - Entregue ZIP na conversa, sem afirmar implantação Pages ou teste em Android. Prioridade seguinte: teste mobile com usuário e avaliação de alternativa de deploy da UI original.
 
+### Etapa 14 — correção após teste real no Android (2026-11-18)
+- Usuário testou ZIP e enviou captura Android: navegador aberto via `content://media/...`, imagem `office.png` não carregou; botão de simulação foi relatado como sem efeito.
+- `companion/index.html` revisado para **funcionar como arquivo HTML único**, sem imagem externa e sem `github-feed.js` externo; cenário HTML/CSS e personagens em pixel blocks CSS, com ações de pausa, reinício, seleção e painel de commits inline. O conteúdo é **simulado**; GitHub consulta somente eventos públicos se a rede/CORS permitir.
+- Commits `1bc11b2` e `f0c1a9b`: alteração e correção dos separadores de script. Arquivo atualizado no GitHub, mas **ainda não testado no Android após a correção**.
+- O artefato CI anterior ZIP permanece desatualizado: baixar a versão nova de `companion/index.html` da branch, ou gerar novo artifact, sem prometer que o ZIP anterior foi atualizado.
+- Prioridade: testar a V2 HTML única em Android; em paralelo preparar **renderer React pixel art original** e hospedagem segura. Não confundir CSS demo com sprites originais.
+
 ## 3. Separação dos sistemas
 
 - **Escritório (este repo):** interface, renderização, integração com eventos, painel de missões e controle condicionado a autenticação.
