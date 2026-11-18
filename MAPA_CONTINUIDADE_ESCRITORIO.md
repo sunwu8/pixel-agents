@@ -5,7 +5,7 @@
 **Repositório:** `sunwu8/pixel-agents` (fork do `pixel-agents-hq/pixel-agents`)
 **Branch de trabalho:** `dev/mobile-office-v1`
 **PR de acompanhamento:** https://github.com/sunwu8/pixel-agents/pull/1 (rascunho)
-**Status:** Protótipo experimental em desenvolvimento; NÃO implantado e NÃO validado em Android.
+**Status:** Protótipo experimental + primeira integração no menu mobile original; NÃO implantado, NÃO validado em Android e SEM testes executados confirmados.
 **Ler este mapa no início de toda retomada e atualizar após alterações verificadas.**
 
 ## 1. Objetivo e princípios
@@ -27,6 +27,12 @@ Arquivos criados e alterados:
 
 **Verificações realizadas:** arquivos confirmados no GitHub. **Não há teste em navegador/Android ou execução CI desta alteração confirmada.** Não afirmar que está publicado, conectado ao Claude ou pronto para produção.
 
+### Etapa 3 — Primeira integração na interface original (2026-11-18)
+- `webview-ui/src/mobile/PublicGitHubActivity.tsx`: componente React de consulta somente leitura a commits públicos da branch do escritório, com tratamento de falhas e botão de atualização.
+- `webview-ui/src/mobile/MobileMenu.tsx`: componente instalado no **menu mobile original**, que usa `OfficeCanvas` e motor gráfico originais. A implementação foi enviada ao GitHub; **compilação e teste mobile não executados**.
+- O editor e renderizador pixel art continuam os originais; a versão `companion/` permanece laboratório separado e não é a tela principal.
+- O feed público é um passo de observabilidade, **não** integração com agentes ou o GitHub privado.
+
 ## 3. Separação dos sistemas
 
 - **Escritório (este repo):** interface, renderização, integração com eventos, painel de missões e controle condicionado a autenticação.
@@ -44,7 +50,9 @@ Arquivos criados e alterados:
 | Protótipo mobile HTML | CÓDIGO ENVIADO | `companion/index.html` |
 | Arte Pixel Agents original | PARCIAL | Screenshot estática, **não** renderer |
 | Feed de commits públicos | CÓDIGO ENVIADO | `companion/github-feed.js`; sem teste de navegador confirmado |
-| Personagens sprite reais animados | PENDENTE | Integrar `webview-ui` e estados reais |
+| Renderer pixel art original no mobile | JÁ EXISTIA NO UPSTREAM | `webview-ui/src/office/components/OfficeCanvas.tsx` e `mobile/MobileShell.tsx`; falta testar no Android |
+| Feed no menu original | CÓDIGO ENVIADO | `PublicGitHubActivity.tsx` + `MobileMenu.tsx`; build/teste pendentes |
+| Personagens com estados reais Antigravity | PENDENTE | Integrar eventos verificáveis |
 | Feed de GitHub privado | PENDENTE | Backend autenticado |
 | Integração Antigravity/Claude | PENDENTE | Verificar evento/provider disponível |
 | Acesso Android e deploy | PENDENTE | Ambiente, segurança e testes |
@@ -52,7 +60,7 @@ Arquivos criados e alterados:
 
 ## 5. Próxima tarefa prioritária
 
-**Substituir a demonstração visual baseada em screenshot/emoji por integração do renderer pixel art original**, preferencialmente adaptando `webview-ui/` em vez de manter um segundo motor gráfico em `companion/`. Estudar componentes do renderer, fluxo servidor-WebSocket e opções de acesso mobile; fazer pequena alteração validável, com testes quando disponíveis, sem quebrar o upstream.
+**Validar compilação e testes da alteração no `MobileMenu` e confirmar interface do renderer original em Android.** O upstream **já tem** `OfficeCanvas`, `MobileShell`, gestos e renderização. Não duplicar o motor em `companion/`. Próxima tarefa: realizar `npm ci`, `npm run check-types`, testes pertinentes e teste de navegação em browser/Android. Verificar layout do painel em aparelhos pequenos, sobretudo altura do menu. Depois integrar estados reais por provedor autenticado.
 
 Depois:
 1. Garantir visualização mobile (viewport, toque, zoom, painéis).
