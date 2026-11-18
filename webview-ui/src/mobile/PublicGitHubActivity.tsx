@@ -18,6 +18,7 @@ export function PublicGitHubActivity({ active }: { active: boolean }) {
   const [entries, setEntries] = useState<Commit[]>([]);
   const [status, setStatus] = useState('Abra o menu para consultar o GitHub.');
   const [loading, setLoading] = useState(false);
+  const [expanded, setExpanded] = useState(false);
 
   const refresh = useCallback(async (signal?: AbortSignal) => {
     setLoading(true);
@@ -50,38 +51,48 @@ export function PublicGitHubActivity({ active }: { active: boolean }) {
   }, []);
 
   useEffect(() => {
-    if (!active) return;
+    if (!active || !expanded) return;
     const controller = new AbortController();
     void refresh(controller.signal);
     return () => controller.abort();
-  }, [active, refresh]);
+  }, [active, expanded, refresh]);
 
   return (
-    <section aria-label="Atividade pública do GitHub" className="px-8 py-6 border-t-2 border-border">
-      <div className="flex items-center justify-between gap-4">
-        <h2 className="text-base">GitHub · Escritório</h2>
-        <button
-          type="button"
-          className="border-2 border-border px-4 py-2 text-sm disabled:opacity-50"
-          disabled={loading}
-          onClick={() => void refresh()}
-        >
-          Atualizar
-        </button>
-      </div>
-      <p role="status" className="text-sm text-text-muted py-3">{status}</p>
-      <ul className="flex flex-col gap-3 max-h-40 overflow-y-auto">
-        {entries.map((entry) => (
-          <li key={entry.sha} className="text-sm break-words">
-            <a target="_blank" rel="noopener noreferrer" href={entry.html_url}>
-              {entry.commit?.message?.split('\n')[0].slice(0, 100) || entry.sha.slice(0, 8)}
-            </a>
-          </li>
-        ))}
-      </ul>
-      <p className="text-sm text-text-muted pt-3">
-        Somente commits públicos do fork. Não representa o estado de Claude, Codex ou CineDoc privado.
-      </p>
+    <section aria-label="Atividade pública do GitHub" className="border-t-2 border-border">
+      <button
+        type="button"
+        className="w-full flex items-center justify-between gap-4 px-8 py-5 text-left"
+        aria-expanded={expanded}
+        onClick={() => setExpanded((value) => !value)}
+      >
+        <span className="text-base">GitHub · Escritório</span>
+        <span aria-hidden="true">{expanded ? '−' : '+'}</span>
+      </button>
+      {expanded && (
+        <div className="px-8 pb-6">
+          <p role="status" className="text-sm text-text-muted pb-3">{status}</p>
+          <button
+            type="button"
+            className="border-2 border-border px-4 py-2 text-sm disabled:opacity-50"
+            disabled={loading}
+            onClick={() => void refresh()}
+          >
+            Atualizar
+          </button>
+          <ul className="flex flex-col gap-3 max-h-40 overflow-y-auto py-3">
+            {entries.map((entry) => (
+              <li key={entry.sha} className="text-sm break-words">
+                <a target="_blank" rel="noopener noreferrer" href={entry.html_url}>
+                  {entry.commit?.message?.split('\\n')[0].slice(0, 100) || entry.sha.slice(0, 8)}
+                </a>
+              </li>
+            ))}
+          </ul>
+          <p className="text-sm text-text-muted">
+            Apenas commits públicos. Não é um monitor de sessões locais dos agentes.
+          </p>
+        </div>
+      )}
     </section>
   );
 }
