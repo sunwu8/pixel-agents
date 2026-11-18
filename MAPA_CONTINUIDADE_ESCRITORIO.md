@@ -55,6 +55,11 @@ Arquivos criados e alterados:
 - Criado `webview-ui/test/publicGithubCommits.test.ts` com **cinco testes de código** sobre commits válidos, URLs maliciosas/divergentes, payload inválido, mensagens multilinha e fallback SHA. **A execução desses testes ainda não foi confirmada.**
 - Preservado fork público em somente leitura no navegador; nenhuma credencial, acesso privado ou controle de agentes foi adicionado.
 
+### Etapa 8 — diagnóstico da CI com logs (2026-11-18)
+- Run de CI `44266265214` confirmado; compilação, typecheck e testes do webview aprovados nos passos observados; o job principal falhou no gate por **lint** (simple-import-sort/imports em `PublicGitHubActivity.tsx`) e **Prettier format:check** no mesmo arquivo. Havia também vulnerabilidades de dependências no audit (aviso não bloqueante). O job de pacote Node 20 falhou durante `npm pack`, que aciona o lint. Outros E2E precisam de verificação separada.
+- Commit posterior ajustou ordem de imports e formatação de `PublicGitHubActivity.tsx` para tentar sanar lint e Prettier. **Novo CI ainda não aprovado/confirmado**; verificar no GitHub antes de afirmar correção.
+- Próximo marco técnico: obter CI verde, tratar dependências com cuidado sem `npm audit fix --force`, então validar acesso mobile; não publicar credenciais nem expor acesso remoto sem autenticação.
+
 ## 3. Separação dos sistemas
 
 - **Escritório (este repo):** interface, renderização, integração com eventos, painel de missões e controle condicionado a autenticação.
@@ -83,7 +88,7 @@ Arquivos criados e alterados:
 
 ## 5. Próxima tarefa prioritária
 
-**Executar/verificar os novos testes do parser e o CI do último commit, corrigir falhas reais e validar o Pixel Agents original no navegador Android.** O upstream **já tem** `OfficeCanvas`, `MobileShell`, gestos e renderização. Não duplicar o motor em `companion/`. Próxima tarefa: verificar a execução e corrigir falhas do workflow de CI mobile; em seguida, teste de navegação no browser/Android. Verificar layout do painel em aparelhos pequenos, sobretudo altura do menu. Depois integrar estados reais por provedor autenticado.
+**Verificar novo CI após ajuste de imports/formatação, corrigir falhas demonstradas e validar o Pixel Agents original no navegador Android.** O upstream **já tem** `OfficeCanvas`, `MobileShell`, gestos e renderização. Não duplicar o motor em `companion/`. Próxima tarefa: verificar a execução e corrigir falhas do workflow de CI mobile; em seguida, teste de navegação no browser/Android. Verificar layout do painel em aparelhos pequenos, sobretudo altura do menu. Depois integrar estados reais por provedor autenticado.
 
 Depois:
 1. Garantir visualização mobile (viewport, toque, zoom, painéis).
