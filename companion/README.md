@@ -1,4 +1,6 @@
-# Escritório dos Agentes — laboratório mobile (V1 / etapa 1)
+# Escritório dos Agentes — laboratório mobile (V1)
+
+> **Continuidade:** antes de trabalhar neste projeto, ler [`MAPA_CONTINUIDADE_ESCRITORIO.md`](../MAPA_CONTINUIDADE_ESCRITORIO.md). Este mapa é exclusivo do escritório e não se confunde com o mapa do CineDoc Engine.
 
 Protótipo **experimental** para celular, independente da aplicação principal Pixel Agents.
 
