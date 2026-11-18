@@ -123,6 +123,12 @@ Arquivos criados e alterados:
 - A prévia é isolada, pública, com assets reais e sem credenciais; não apresenta status real dos agentes nem conecta repositórios privados.
 - Próximo passo: verificar workflow `Original Pixel Office - Web Preview` (job build/deploy); corrigir erros comprovados; só entregar URL depois de testá-la.
 
+### Etapa 18 — tratamento de falhas da prévia original (2026-11-18)
+- Workflow novo de Pages não teve deploy confirmado. A consulta ao commit `07248d0` encontrou CI `44270388914` pendente, sem jobs; isso não prova publicação e não autoriza anunciar URL.
+- Em `webview-ui/src/main.tsx`, implementada tela de erro **apenas para VITE_OFFICE_DEMO=1** quando o carregamento inicial falhar, explicando que os assets requerem hospedagem HTTP(S) e mostrando diagnóstico técnico limitado. Evita que uma falha antes do React resulte em branco silencioso.
+- Commit `8719506` enviado à branch; build/testes deste commit não confirmados. Não houve edição no CineDoc.
+- Próxima etapa: observar build e deploy Pages; se Pages não estiver configurado no fork, habilitar GitHub Actions como origem na tela Settings > Pages (a configuração ainda não pôde ser alterada pelas ferramentas disponíveis).
+
 ## 3. Separação dos sistemas
 
 - **Escritório (este repo):** interface, renderização, integração com eventos, painel de missões e controle condicionado a autenticação.
