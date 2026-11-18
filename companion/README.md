@@ -25,3 +25,10 @@ Abra `companion/index.html` em um navegador moderno ou sirva esse diretório com
 5. Proteger acesso remoto, validar em Android e rodar testes/CI antes de publicar.
 
 Fork baseado em [pixel-agents-hq/pixel-agents](https://github.com/pixel-agents-hq/pixel-agents), licença MIT. Não alterar CineDoc-Engine.
+
+## Etapa 2 — visual original e feed GitHub (2026-11-18)
+- Tela inicia exibindo **imagem estática original** de `webview-ui/public/office.png`, reutilizando a arte do projeto-base. O botão **Ver simulação** alterna para a demonstração interativa com personagens fictícios.
+- Painel **GitHub real — commits públicos** consulta a API pública do GitHub para a branch `dev/mobile-office-v1` deste fork, sem tokens. Inclui botão de atualizar, data, tratamento de erros e links para commits.
+- Atenção: o feed não mostra commits de `CineDoc-Engine` (repositório privado), nem estados reais dos agentes.
+- A imagem original é uma **captura**, não o motor gráfico interativo. Próximo passo: incorporar o renderer original de `webview-ui` e testar a interface em dispositivos Android.
+- Uma API pública tem limites de requisições e pode falhar; a interface indica isso, sem fabricar dados.
