@@ -38,6 +38,11 @@ Arquivos criados e alterados:
 - Pipeline executa `npm ci`, geração de mensagens AsyncAPI, verificação de tipos, lint, testes do webview e compilação do webview em Node definido por `.nvmrc`.
 - O workflow foi **enviado** ao repositório, mas seu acionamento e aprovação **não foram confirmados**. Conferir Actions antes de afirmar sucesso; o GitHub pode bloquear workflows novos em forks até habilitação.
 
+### Etapa 5 — auditoria CI e usabilidade mobile (2026-11-18)
+- Workflow `CI` do PR detectado realmente em execução: https://github.com/sunwu8/pixel-agents/actions/runs/44265736482 ; no momento da consulta estava `in_progress`, inclusive jobs de CI e E2E. **Não declarar aprovado até conclusão**.
+- Ajustado `webview-ui/src/mobile/PublicGitHubActivity.tsx` para painel de GitHub **recolhido por padrão**, com `aria-expanded` e consulta apenas após abrir, a fim de poupar espaço no menu mobile.
+- Validação desse ajuste via CI/Android ainda pendente; manter estado de testes não confirmados.
+
 ## 3. Separação dos sistemas
 
 - **Escritório (este repo):** interface, renderização, integração com eventos, painel de missões e controle condicionado a autenticação.
@@ -56,7 +61,7 @@ Arquivos criados e alterados:
 | Arte Pixel Agents original | PARCIAL | Screenshot estática, **não** renderer |
 | Feed de commits públicos | CÓDIGO ENVIADO | `companion/github-feed.js`; sem teste de navegador confirmado |
 | Renderer pixel art original no mobile | JÁ EXISTIA NO UPSTREAM | `webview-ui/src/office/components/OfficeCanvas.tsx` e `mobile/MobileShell.tsx`; falta testar no Android |
-| Feed no menu original | CÓDIGO ENVIADO | `PublicGitHubActivity.tsx` + `MobileMenu.tsx`; build/teste pendentes |
+| Feed no menu original | CÓDIGO ENVIADO | `PublicGitHubActivity.tsx` + `MobileMenu.tsx`; painel recolhível, build/teste pendentes |
 | Workflow de qualidade mobile | CÓDIGO ENVIADO | `.github/workflows/office-mobile-v1.yml`; execução e resultado não confirmados |
 | Personagens com estados reais Antigravity | PENDENTE | Integrar eventos verificáveis |
 | Feed de GitHub privado | PENDENTE | Backend autenticado |
@@ -66,7 +71,7 @@ Arquivos criados e alterados:
 
 ## 5. Próxima tarefa prioritária
 
-**Validar compilação e testes da alteração no `MobileMenu` e confirmar interface do renderer original em Android.** O upstream **já tem** `OfficeCanvas`, `MobileShell`, gestos e renderização. Não duplicar o motor em `companion/`. Próxima tarefa: verificar a execução e corrigir falhas do workflow de CI mobile; em seguida, teste de navegação no browser/Android. Verificar layout do painel em aparelhos pequenos, sobretudo altura do menu. Depois integrar estados reais por provedor autenticado.
+**Verificar conclusões do CI em execução, corrigir falhas demonstradas e confirmar interface do renderer original em Android.** O upstream **já tem** `OfficeCanvas`, `MobileShell`, gestos e renderização. Não duplicar o motor em `companion/`. Próxima tarefa: verificar a execução e corrigir falhas do workflow de CI mobile; em seguida, teste de navegação no browser/Android. Verificar layout do painel em aparelhos pequenos, sobretudo altura do menu. Depois integrar estados reais por provedor autenticado.
 
 Depois:
 1. Garantir visualização mobile (viewport, toque, zoom, painéis).
