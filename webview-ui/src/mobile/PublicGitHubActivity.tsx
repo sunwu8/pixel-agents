@@ -1,21 +1,16 @@
 import { useCallback, useEffect, useState } from 'react';
 
-type Commit = {
-  sha: string;
-  html_url: string;
-  commit?: { message?: string; committer?: { date?: string } };
-};
+import { parsePublicCommits, publicCommitTitle, type PublicCommit } from './publicGithubCommits.js';
 
 const COMMITS_URL =
   'https://api.github.com/repos/sunwu8/pixel-agents/commits?sha=dev%2Fmobile-office-v1&per_page=5';
-const SAFE_COMMIT = /^https:\/\/github\.com\/sunwu8\/pixel-agents\/commit\/[a-f0-9]{40}$/;
 
 /**
  * Read-only public GitHub feed. No private tokens, proxy, or agent state.
  * Mounted in the *real* Pixel Agents mobile menu, not in the companion demo.
  */
 export function PublicGitHubActivity({ active }: { active: boolean }) {
-  const [entries, setEntries] = useState<Commit[]>([]);
+  const [entries, setEntries] = useState<PublicCommit[]>([]);
   const [status, setStatus] = useState('Abra o menu para consultar o GitHub.');
   const [loading, setLoading] = useState(false);
   const [expanded, setExpanded] = useState(false);
@@ -31,13 +26,7 @@ export function PublicGitHubActivity({ active }: { active: boolean }) {
       });
       if (!response.ok) throw new Error('HTTP ' + response.status);
       const payload: unknown = await response.json();
-      if (!Array.isArray(payload)) throw new Error('Resposta inválida');
-      const commits = payload.filter((item): item is Commit => {
-        if (typeof item !== 'object' || item === null) return false;
-        const candidate = item as Partial<Commit>;
-        return typeof candidate.sha === 'string' && typeof candidate.html_url === 'string' &&
-          SAFE_COMMIT.test(candidate.html_url);
-      });
+      const commits = parsePublicCommits(payload);
       if (signal?.aborted) return;
       setEntries(commits);
       setStatus(commits.length ? 'Dados reais do GitHub público.' : 'Nenhum commit encontrado.');
@@ -83,7 +72,7 @@ export function PublicGitHubActivity({ active }: { active: boolean }) {
             {entries.map((entry) => (
               <li key={entry.sha} className="text-sm break-words">
                 <a target="_blank" rel="noopener noreferrer" href={entry.html_url}>
-                  {entry.commit?.message?.split('\n')[0].slice(0, 100) || entry.sha.slice(0, 8)}
+                  {publicCommitTitle(entry)}
                 </a>
               </li>
             ))}
