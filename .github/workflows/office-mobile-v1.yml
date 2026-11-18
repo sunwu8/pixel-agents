@@ -1,0 +1,46 @@
+name: Office Mobile V1 Checks
+
+on:
+  push:
+    branches:
+      - dev/mobile-office-v1
+    paths:
+      - 'webview-ui/**'
+      - 'companion/**'
+      - 'package.json'
+      - 'package-lock.json'
+      - '.github/workflows/office-mobile-v1.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: office-mobile-v1-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  mobile-quality:
+    name: Typecheck, lint, tests, build
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          cache: npm
+      - name: Dependencies
+        run: npm ci
+      - name: Generate protocol types
+        run: npm run asyncapi:generate
+      - name: Typecheck
+        run: npm run check-types
+      - name: Lint
+        run: npm run lint
+      - name: Webview tests
+        run: npm run test:webview
+      - name: Build webview
+        run: npm run build:webview

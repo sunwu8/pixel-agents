@@ -9,6 +9,7 @@ import {
   ConversationList,
   type ConversationSearchScope,
 } from '../conversations/ConversationList.js';
+import { PublicGitHubActivity } from './PublicGitHubActivity.js';
 import type { SwipePanel } from './useEdgeSwipe.js';
 import { useEdgeSwipe } from './useEdgeSwipe.js';
 
@@ -132,6 +133,7 @@ export function MobileMenu({
         ) : (
           <div className="flex-1" />
         )}
+        <PublicGitHubActivity active={open} />
         <div className="p-8 border-t-2 border-border">
           <Button
             size="md"

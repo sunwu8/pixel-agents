@@ -25,3 +25,6 @@ export const isBrowserRuntime = runtime === 'browser';
 export const isE2E: boolean =
   typeof window !== 'undefined' &&
   (window as unknown as { __PIXEL_AGENTS_E2E?: boolean }).__PIXEL_AGENTS_E2E === true;
+
+/** Explicit opt-in for a static, public pixel-art preview; never connects to private agents. */
+export const isOfficePreview = isBrowserRuntime && import.meta.env.VITE_OFFICE_DEMO === '1';

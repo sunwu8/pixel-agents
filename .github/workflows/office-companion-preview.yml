@@ -1,0 +1,73 @@
+name: Original Pixel Office - Web Preview
+# Deployment retry after GitHub Pages branch access was authorized (2026-11-18).
+
+on:
+  push:
+    branches:
+      - dev/mobile-office-v1
+    paths:
+      - 'webview-ui/**'
+      - 'core/**'
+      - 'package.json'
+      - 'package-lock.json'
+      - '.github/workflows/office-companion-preview.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: original-office-pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build original interactive office
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - name: Build Pixel Agents renderer with explicit demo mode
+        env:
+          VITE_OFFICE_DEMO: '1'
+        run: npm run build:webview
+      - name: Verify static app and assets
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -s dist/webview/index.html
+          test -s dist/webview/assets/asset-index.json
+          test -s dist/webview/assets/furniture-catalog.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: office-original-web-preview
+          path: dist/webview/
+          if-no-files-found: error
+
+  deploy:
+    name: Deploy original Pixel Agents to Pages
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: office-original-web-preview
+          path: _site/
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site/
+      - id: deployment
+        uses: actions/deploy-pages@v4

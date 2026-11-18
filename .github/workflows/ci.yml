@@ -231,6 +231,67 @@ jobs:
           done
           exit "$failed"
 
+  original-office-preview:
+    name: Original pixel-art office preview (static)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - name: Install dependencies
+        run: npm ci
+      - name: Build original office for browser preview
+        env:
+          VITE_OFFICE_DEMO: '1'
+        run: npm run build:webview
+      - name: Verify built office
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -s dist/webview/index.html
+          test -s dist/webview/assets/asset-index.json
+          test -s dist/webview/assets/furniture-catalog.json
+      - name: Upload real office preview
+        uses: actions/upload-artifact@v4
+        with:
+          name: original-pixel-office-preview
+          path: dist/webview/
+          if-no-files-found: error
+          retention-days: 14
+
+  office-mobile-artifact:
+    name: Office mobile demo artifact
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Assemble offline demo
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p _site
+          cp companion/index.html _site/index.html
+          test -s _site/index.html
+          grep -Fq 'id="agents"' _site/index.html
+          grep -Fq 'id="toggle"' _site/index.html
+          if grep -Eq '<script[^>]+src=' _site/index.html; then
+            echo "Demo must be self-contained" >&2
+            exit 1
+          fi
+      - name: Save downloadable demo
+        uses: actions/upload-artifact@v4
+        with:
+          name: office-mobile-demo
+          path: _site/
+          if-no-files-found: error
+          retention-days: 14
+
   npm-package-node20:
     name: npm Package Smoke (Node 20)
     runs-on: ubuntu-latest
