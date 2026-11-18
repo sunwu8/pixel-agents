@@ -110,6 +110,12 @@ Arquivos criados e alterados:
 - A URL GitHub Pages continua não confirmada. O artifact, se gerado, pode requerer servidor estático para funcionar no Android (não garantir abertura via `content://`).
 - Não modificar CineDoc Engine.
 
+### Etapa 16 — primeira build original confirmada (2026-11-18)
+- Run CI `44269304466`, job **Original pixel-art office preview (static)** concluiu `success`: instalação, build, verificação e upload aprovados.
+- Artefato `original-pixel-office-preview`, ID `14411423296`, baixado e inspecionado: ZIP ~787 KB, 98 entradas, `index.html`, `assets/asset-index.json`, ~60 arquivos PNG e bundle JavaScript do browserMock. É a primeira prévia compilada do **renderer original**. **Ainda não validada em navegador Android e não publicada em HTTPS**; arquivos estáticos com imports/assets podem falhar ao abrir localmente em `content://`.
+- Job legado `Office mobile demo artifact` do mesmo run falhou por exigir `office.png` e `github-feed.js` externos que já não são referenciados pela demo HTML única. Corrigido `.github/workflows/ci.yml` no commit `a485a49`, pacote legado agora verifica somente `index.html`. Novo run de teste dessa correção ainda não confirmado.
+- Próximo foco: hospedar a build original sob HTTPS para teste Android real, validar carregamento de assets e comportamento da UI mobile. A demo usa dados simulados; não afirmar integração real de agentes nem alterar CineDoc.
+
 ## 3. Separação dos sistemas
 
 - **Escritório (este repo):** interface, renderização, integração com eventos, painel de missões e controle condicionado a autenticação.
@@ -138,7 +144,7 @@ Arquivos criados e alterados:
 
 ## 5. Próxima tarefa prioritária
 
-**Validar o job `Original pixel-art office preview (static)` e seu artifact. Em seguida, testar a execução do renderer original no Android via hospedagem HTTP(S) segura. Não gastar esforços adicionais no protótipo CSS.** O upstream **já tem** `OfficeCanvas`, `MobileShell`, gestos e renderização. Não duplicar o motor em `companion/`. Próxima tarefa: verificar a execução e corrigir falhas do workflow de CI mobile; em seguida, teste de navegação no browser/Android. Verificar layout do painel em aparelhos pequenos, sobretudo altura do menu. Depois integrar estados reais por provedor autenticado.
+**Build original confirmada e ZIP entregue. Próxima tarefa: fornecer uma hospedagem HTTPS para testar a interface real no Android, sem tratar a prévia estática como sistema de agentes conectados.** O upstream **já tem** `OfficeCanvas`, `MobileShell`, gestos e renderização. Não duplicar o motor em `companion/`. Próxima tarefa: verificar a execução e corrigir falhas do workflow de CI mobile; em seguida, teste de navegação no browser/Android. Verificar layout do painel em aparelhos pequenos, sobretudo altura do menu. Depois integrar estados reais por provedor autenticado.
 
 Depois:
 1. Garantir visualização mobile (viewport, toque, zoom, painéis).
