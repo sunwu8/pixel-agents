@@ -101,6 +101,15 @@ Arquivos criados e alterados:
 - O artefato CI anterior ZIP permanece desatualizado: baixar a versão nova de `companion/index.html` da branch, ou gerar novo artifact, sem prometer que o ZIP anterior foi atualizado.
 - Prioridade: testar a V2 HTML única em Android; em paralelo preparar **renderer React pixel art original** e hospedagem segura. Não confundir CSS demo com sprites originais.
 
+### Etapa 15 — build do escritório pixel art ORIGINAL (2026-11-18)
+- Confirmado no código do upstream: `webview-ui/src/browserMock.ts` carrega os sprites e o layout autênticos do Pixel Agents e implementa fallback PNG para builds em navegador, porém estava limitado ao Vite DEV.
+- Adicionado opt-in explícito `VITE_OFFICE_DEMO=1` em `runtime.ts`; `main.tsx` carrega assets e `App.tsx` despacha mensagens da demonstração também em build estática quando habilitado. Em produção normal e VS Code, o comportamento anterior permanece.
+- CI `.github/workflows/ci.yml` ganhou job `original-office-preview`: `npm ci`, `VITE_OFFICE_DEMO=1 npm run build:webview`, verifica `dist/webview/index.html` e metadados, envia `original-pixel-office-preview` como artifact.
+- Este é o PRIMEIRO passo para uma prévia baseada no renderer e sprites REAIS, não no HTML CSS de `companion/`. **O novo artifact ainda não foi confirmado, nem o resultado do build ou render no Android.**
+- A prévia estática não conecta Claude, Codex ou Antigravity e não pode ser apresentada como monitor real. O browserMock despacha `characters: []`, portanto a cena pode não apresentar agentes até criar mecanismo de personagens demonstrativos claramente marcados.
+- A URL GitHub Pages continua não confirmada. O artifact, se gerado, pode requerer servidor estático para funcionar no Android (não garantir abertura via `content://`).
+- Não modificar CineDoc Engine.
+
 ## 3. Separação dos sistemas
 
 - **Escritório (este repo):** interface, renderização, integração com eventos, painel de missões e controle condicionado a autenticação.
@@ -129,7 +138,7 @@ Arquivos criados e alterados:
 
 ## 5. Próxima tarefa prioritária
 
-**Pacote `office-mobile-demo` confirmado e entregue. Próxima prioridade: testar a demonstração no Android e preparar acesso autenticado à interface React original, sem confundir demo HTML com renderer completo.** O upstream **já tem** `OfficeCanvas`, `MobileShell`, gestos e renderização. Não duplicar o motor em `companion/`. Próxima tarefa: verificar a execução e corrigir falhas do workflow de CI mobile; em seguida, teste de navegação no browser/Android. Verificar layout do painel em aparelhos pequenos, sobretudo altura do menu. Depois integrar estados reais por provedor autenticado.
+**Validar o job `Original pixel-art office preview (static)` e seu artifact. Em seguida, testar a execução do renderer original no Android via hospedagem HTTP(S) segura. Não gastar esforços adicionais no protótipo CSS.** O upstream **já tem** `OfficeCanvas`, `MobileShell`, gestos e renderização. Não duplicar o motor em `companion/`. Próxima tarefa: verificar a execução e corrigir falhas do workflow de CI mobile; em seguida, teste de navegação no browser/Android. Verificar layout do painel em aparelhos pequenos, sobretudo altura do menu. Depois integrar estados reais por provedor autenticado.
 
 Depois:
 1. Garantir visualização mobile (viewport, toque, zoom, painéis).
