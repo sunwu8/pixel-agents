@@ -81,6 +81,12 @@ Arquivos criados e alterados:
 - **É código enviado, não artifact já confirmado.** Conferir a nova execução de CI após o commit `7697f4f` e inspecionar os artefatos do run; não tratar falhas/cancelamentos de outros jobs como sucesso.
 - A demonstração offline não é a aplicação React real nem tem agentes conectados. O painel GitHub requer acesso à internet para exibir commits.
 
+### Etapa 12 — verificação do pacote mobile (2026-11-18)
+- Consultado o CI run `44267189418` do último commit da etapa 11. Na consulta, status `pending`, lista de jobs vazia e lista de artefatos vazia.
+- **Nenhum arquivo `office-mobile-demo` foi confirmado**. Esse resultado não prova falha do empacotamento: a execução ainda não havia começado a reportar jobs.
+- Próxima ação: consultar novamente esse run; quando o job `Office mobile demo artifact` aparecer, verificar sua conclusão e o artefato. Se houver falha, ler logs antes de editar.
+- Nenhuma alteração foi feita no CineDoc nem na interface nesta etapa.
+
 ## 3. Separação dos sistemas
 
 - **Escritório (este repo):** interface, renderização, integração com eventos, painel de missões e controle condicionado a autenticação.
