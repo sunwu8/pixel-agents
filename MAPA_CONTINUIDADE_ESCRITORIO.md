@@ -48,6 +48,13 @@ Arquivos criados e alterados:
 - Corrigido em `webview-ui/src/mobile/PublicGitHubActivity.tsx` o separador de linhas da mensagem do commit: agora usa quebra de linha real, em vez de buscar texto literal `\\n`.
 - Não confirmar compilação ou testes aprovados sem novo resultado explícito. Alterações permanecem em branch isolada, PR #1 em rascunho.
 
+### Etapa 7 — testes específicos do feed (2026-11-18)
+- Revisado CI na execução `44266080659`, registrada como `pending` no momento da consulta; não foi confirmada aprovação. O acesso usado para listar runs associados ao commit pode não incluir todos os workflows push.
+- Criado `webview-ui/src/mobile/publicGithubCommits.ts`: valida payloads recebidos da API pública, restringe URLs ao fork e verifica correspondência entre URL e SHA; extrai título da primeira linha.
+- `PublicGitHubActivity.tsx` utiliza esse parser, substituindo lógica dispersa.
+- Criado `webview-ui/test/publicGithubCommits.test.ts` com **cinco testes de código** sobre commits válidos, URLs maliciosas/divergentes, payload inválido, mensagens multilinha e fallback SHA. **A execução desses testes ainda não foi confirmada.**
+- Preservado fork público em somente leitura no navegador; nenhuma credencial, acesso privado ou controle de agentes foi adicionado.
+
 ## 3. Separação dos sistemas
 
 - **Escritório (este repo):** interface, renderização, integração com eventos, painel de missões e controle condicionado a autenticação.
@@ -76,7 +83,7 @@ Arquivos criados e alterados:
 
 ## 5. Próxima tarefa prioritária
 
-**Verificar conclusão de CI para o último commit, corrigir falhas comprovadas e confirmar a interface original em Android.** O upstream **já tem** `OfficeCanvas`, `MobileShell`, gestos e renderização. Não duplicar o motor em `companion/`. Próxima tarefa: verificar a execução e corrigir falhas do workflow de CI mobile; em seguida, teste de navegação no browser/Android. Verificar layout do painel em aparelhos pequenos, sobretudo altura do menu. Depois integrar estados reais por provedor autenticado.
+**Executar/verificar os novos testes do parser e o CI do último commit, corrigir falhas reais e validar o Pixel Agents original no navegador Android.** O upstream **já tem** `OfficeCanvas`, `MobileShell`, gestos e renderização. Não duplicar o motor em `companion/`. Próxima tarefa: verificar a execução e corrigir falhas do workflow de CI mobile; em seguida, teste de navegação no browser/Android. Verificar layout do painel em aparelhos pequenos, sobretudo altura do menu. Depois integrar estados reais por provedor autenticado.
 
 Depois:
 1. Garantir visualização mobile (viewport, toque, zoom, painéis).
