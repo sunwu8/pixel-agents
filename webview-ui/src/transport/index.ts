@@ -1,5 +1,5 @@
 import type { ServerMessage } from '../../../core/src/messages.js';
-import { isBrowserRuntime } from '../runtime.js';
+import { isBrowserRuntime, isOfficePreview } from '../runtime.js';
 import { PostMessageTransport } from './postMessageTransport.js';
 import { serverToken } from './serverToken.js';
 import type { MessageTransport } from './types.js';
@@ -30,7 +30,7 @@ function createTransport(): MessageTransport {
   // out of the production standalone build. Exactly ONE connect() call must
   // remain: WebSocketTransport has no guard, and a second call orphans a live
   // socket whose handlers keep delivering every broadcast a second time.
-  if (import.meta.env.DEV) {
+  if (import.meta.env.DEV || isOfficePreview) {
     window.addEventListener('message', (e: MessageEvent) => {
       const data = e.data as unknown;
       if (
