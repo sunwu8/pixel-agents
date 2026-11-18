@@ -83,7 +83,7 @@ export function PublicGitHubActivity({ active }: { active: boolean }) {
             {entries.map((entry) => (
               <li key={entry.sha} className="text-sm break-words">
                 <a target="_blank" rel="noopener noreferrer" href={entry.html_url}>
-                  {entry.commit?.message?.split('\\n')[0].slice(0, 100) || entry.sha.slice(0, 8)}
+                  {entry.commit?.message?.split('\n')[0].slice(0, 100) || entry.sha.slice(0, 8)}
                 </a>
               </li>
             ))}
