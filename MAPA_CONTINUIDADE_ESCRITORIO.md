@@ -87,6 +87,13 @@ Arquivos criados e alterados:
 - Próxima ação: consultar novamente esse run; quando o job `Office mobile demo artifact` aparecer, verificar sua conclusão e o artefato. Se houver falha, ler logs antes de editar.
 - Nenhuma alteração foi feita no CineDoc nem na interface nesta etapa.
 
+### Etapa 13 — pacote realmente gerado e inspecionado (2026-11-18)
+- Confirmado no GitHub Actions run `44267310221`, job **Office mobile demo artifact** com conclusão `success`.
+- Confirmado artefato **`office-mobile-demo`** com ID `14409879737`. ZIP foi baixado e inspecionado: três arquivos, `index.html`, `github-feed.js` e `office.png`; tamanho ZIP aprox. 47 KB.
+- **Este ZIP é uma demonstração local HTML** e não a versão com renderer React/servidor e agentes reais. O feed GitHub depende de internet.
+- O CI geral desse run mostrou falhas nos jobs `CI` e `npm Package Smoke`; E2E estavam em andamento na consulta. Não afirmar suite verde.
+- Entregue ZIP na conversa, sem afirmar implantação Pages ou teste em Android. Prioridade seguinte: teste mobile com usuário e avaliação de alternativa de deploy da UI original.
+
 ## 3. Separação dos sistemas
 
 - **Escritório (este repo):** interface, renderização, integração com eventos, painel de missões e controle condicionado a autenticação.
@@ -110,12 +117,12 @@ Arquivos criados e alterados:
 | Personagens com estados reais Antigravity | PENDENTE | Integrar eventos verificáveis |
 | Feed de GitHub privado | PENDENTE | Backend autenticado |
 | Integração Antigravity/Claude | PENDENTE | Verificar evento/provider disponível |
-| Acesso Android e deploy | PREVIEW PREPARADA | Workflow GitHub Pages enviado; publicação e acesso ainda não confirmados |
+| Acesso Android e deploy | ZIP DEMO GERADO | Artifact `14409879737` confirmado; Pages e app original não publicados/verificados |
 | Aprovações remotas de agentes | FORA DA V1 | Exige integração e permissões explícitas |
 
 ## 5. Próxima tarefa prioritária
 
-**Verificar no novo run do CI o job `Office mobile demo artifact` e seu `office-mobile-demo` baixável. Após confirmar, testar a demonstração Android e preparar acesso à interface React original. Pages permanece opcional e não verificado.** O upstream **já tem** `OfficeCanvas`, `MobileShell`, gestos e renderização. Não duplicar o motor em `companion/`. Próxima tarefa: verificar a execução e corrigir falhas do workflow de CI mobile; em seguida, teste de navegação no browser/Android. Verificar layout do painel em aparelhos pequenos, sobretudo altura do menu. Depois integrar estados reais por provedor autenticado.
+**Pacote `office-mobile-demo` confirmado e entregue. Próxima prioridade: testar a demonstração no Android e preparar acesso autenticado à interface React original, sem confundir demo HTML com renderer completo.** O upstream **já tem** `OfficeCanvas`, `MobileShell`, gestos e renderização. Não duplicar o motor em `companion/`. Próxima tarefa: verificar a execução e corrigir falhas do workflow de CI mobile; em seguida, teste de navegação no browser/Android. Verificar layout do painel em aparelhos pequenos, sobretudo altura do menu. Depois integrar estados reais por provedor autenticado.
 
 Depois:
 1. Garantir visualização mobile (viewport, toque, zoom, painéis).
