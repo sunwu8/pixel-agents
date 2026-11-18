@@ -231,6 +231,34 @@ jobs:
           done
           exit "$failed"
 
+  office-mobile-artifact:
+    name: Office mobile demo artifact
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Assemble offline demo
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p _site
+          cp companion/index.html companion/github-feed.js _site/
+          cp webview-ui/public/office.png _site/office.png
+          sed -i 's|../webview-ui/public/office.png|./office.png|g' _site/index.html
+          grep -Fq 'src="./office.png"' _site/index.html
+          grep -Fq 'src="./github-feed.js"' _site/index.html
+          test -s _site/index.html
+          test -s _site/office.png
+          test -s _site/github-feed.js
+      - name: Save downloadable demo
+        uses: actions/upload-artifact@v4
+        with:
+          name: office-mobile-demo
+          path: _site/
+          if-no-files-found: error
+          retention-days: 14
+
   npm-package-node20:
     name: npm Package Smoke (Node 20)
     runs-on: ubuntu-latest
