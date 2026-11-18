@@ -74,6 +74,13 @@ Arquivos criados e alterados:
 - Código enviado em commit `0d8f2fb`; **execução de workflow, artifact disponível e URL Pages não confirmados nesta etapa**.
 - CI run `44266822686` estava `pending` quando consultado. Evitar concluir sucesso sem checks posteriores.
 
+### Etapa 11 — pacote anexado ao CI verificado (2026-11-18)
+- A URL GitHub Pages não foi verificada como acessível neste atendimento; não prometer link público.
+- No workflow existente `.github/workflows/ci.yml`, que **tem execuções verificadas de pull request**, adicionado job independente `office-mobile-artifact`. Ele monta a demonstração estática usando `companion/index.html`, `github-feed.js` e a imagem `office.png` original; valida arquivos e salva `office-mobile-demo` como artifact (14 dias). Não altera CineDoc.
+- Motivo: o workflow de Pages isolado não teve execução/implantação comprovada pelas ferramentas consultadas. O job no CI existente reduz dependência do Pages e permite verificar o pacote na aba Actions do PR.
+- **É código enviado, não artifact já confirmado.** Conferir a nova execução de CI após o commit `7697f4f` e inspecionar os artefatos do run; não tratar falhas/cancelamentos de outros jobs como sucesso.
+- A demonstração offline não é a aplicação React real nem tem agentes conectados. O painel GitHub requer acesso à internet para exibir commits.
+
 ## 3. Separação dos sistemas
 
 - **Escritório (este repo):** interface, renderização, integração com eventos, painel de missões e controle condicionado a autenticação.
@@ -102,7 +109,7 @@ Arquivos criados e alterados:
 
 ## 5. Próxima tarefa prioritária
 
-**Verificar o workflow de preview: pacote `office-mobile-demo` disponível em Actions, deploy Pages (habilitar em Settings > Pages se necessário), e em seguida testar no Android. Verificar CI sem confundir cancelamento com falha de compilação.** O upstream **já tem** `OfficeCanvas`, `MobileShell`, gestos e renderização. Não duplicar o motor em `companion/`. Próxima tarefa: verificar a execução e corrigir falhas do workflow de CI mobile; em seguida, teste de navegação no browser/Android. Verificar layout do painel em aparelhos pequenos, sobretudo altura do menu. Depois integrar estados reais por provedor autenticado.
+**Verificar no novo run do CI o job `Office mobile demo artifact` e seu `office-mobile-demo` baixável. Após confirmar, testar a demonstração Android e preparar acesso à interface React original. Pages permanece opcional e não verificado.** O upstream **já tem** `OfficeCanvas`, `MobileShell`, gestos e renderização. Não duplicar o motor em `companion/`. Próxima tarefa: verificar a execução e corrigir falhas do workflow de CI mobile; em seguida, teste de navegação no browser/Android. Verificar layout do painel em aparelhos pequenos, sobretudo altura do menu. Depois integrar estados reais por provedor autenticado.
 
 Depois:
 1. Garantir visualização mobile (viewport, toque, zoom, painéis).
