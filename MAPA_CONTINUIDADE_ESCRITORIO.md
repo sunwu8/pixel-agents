@@ -116,6 +116,13 @@ Arquivos criados e alterados:
 - Job legado `Office mobile demo artifact` do mesmo run falhou por exigir `office.png` e `github-feed.js` externos que já não são referenciados pela demo HTML única. Corrigido `.github/workflows/ci.yml` no commit `a485a49`, pacote legado agora verifica somente `index.html`. Novo run de teste dessa correção ainda não confirmado.
 - Próximo foco: hospedar a build original sob HTTPS para teste Android real, validar carregamento de assets e comportamento da UI mobile. A demo usa dados simulados; não afirmar integração real de agentes nem alterar CineDoc.
 
+### Etapa 17 — tentativa de hospedagem HTTPS do renderer original (2026-11-18)
+- Usuário testou o ZIP do renderer original no Android: `index.html` aberto pelo Chrome sob `content://media/...` exibiu tela totalmente branca. Isso indica falha do carregamento do app como arquivo local, sem prova de erro na build.
+- Workflow `.github/workflows/office-companion-preview.yml` substituído por **Original Pixel Office - Web Preview**: compila `webview-ui` com `VITE_OFFICE_DEMO=1`, valida arquivos, gera artefato `office-original-web-preview` e tenta publicar em GitHub Pages via HTTPS.
+- Commit `0483bf2` enviado; **ainda NÃO foi confirmada execução do deploy nem URL funcional**. Pode depender de GitHub Settings > Pages > Source: GitHub Actions e da disponibilidade do recurso.
+- A prévia é isolada, pública, com assets reais e sem credenciais; não apresenta status real dos agentes nem conecta repositórios privados.
+- Próximo passo: verificar workflow `Original Pixel Office - Web Preview` (job build/deploy); corrigir erros comprovados; só entregar URL depois de testá-la.
+
 ## 3. Separação dos sistemas
 
 - **Escritório (este repo):** interface, renderização, integração com eventos, painel de missões e controle condicionado a autenticação.
