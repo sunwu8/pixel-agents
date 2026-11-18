@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 
-import { parsePublicCommits, publicCommitTitle, type PublicCommit } from './publicGithubCommits.js';
+import { type PublicCommit, parsePublicCommits, publicCommitTitle } from './publicGithubCommits.js';
 
 const COMMITS_URL =
   'https://api.github.com/repos/sunwu8/pixel-agents/commits?sha=dev%2Fmobile-office-v1&per_page=5';
@@ -32,8 +32,11 @@ export function PublicGitHubActivity({ active }: { active: boolean }) {
       setStatus(commits.length ? 'Dados reais do GitHub público.' : 'Nenhum commit encontrado.');
     } catch (error) {
       if (signal?.aborted) return;
-      setStatus('Não foi possível consultar o GitHub (' +
-        (error instanceof Error ? error.message.slice(0, 40) : 'erro de rede') + ').');
+      setStatus(
+        'Não foi possível consultar o GitHub (' +
+          (error instanceof Error ? error.message.slice(0, 40) : 'erro de rede') +
+          ').',
+      );
     } finally {
       if (!signal?.aborted) setLoading(false);
     }
