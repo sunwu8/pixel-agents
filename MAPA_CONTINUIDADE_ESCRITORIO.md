@@ -5,7 +5,7 @@
 **Repositório:** `sunwu8/pixel-agents` (fork do `pixel-agents-hq/pixel-agents`)
 **Branch de trabalho:** `dev/mobile-office-v1`
 **PR de acompanhamento:** https://github.com/sunwu8/pixel-agents/pull/1 (rascunho)
-**Status:** Protótipo experimental + primeira integração no menu mobile original; NÃO implantado, NÃO validado em Android e SEM testes executados confirmados.
+**Status:** Protótipo experimental + primeira integração no menu mobile original; workflow de validação enviado, sem resultados confirmados; NÃO implantado e NÃO validado em Android.
 **Ler este mapa no início de toda retomada e atualizar após alterações verificadas.**
 
 ## 1. Objetivo e princípios
@@ -33,6 +33,11 @@ Arquivos criados e alterados:
 - O editor e renderizador pixel art continuam os originais; a versão `companion/` permanece laboratório separado e não é a tela principal.
 - O feed público é um passo de observabilidade, **não** integração com agentes ou o GitHub privado.
 
+### Etapa 4 — CI da branch mobile (2026-11-18)
+- Criado `.github/workflows/office-mobile-v1.yml`, acionado por push em `dev/mobile-office-v1` com mudanças em `webview-ui`, `companion`, pacote ou workflow; oferece `workflow_dispatch`.
+- Pipeline executa `npm ci`, geração de mensagens AsyncAPI, verificação de tipos, lint, testes do webview e compilação do webview em Node definido por `.nvmrc`.
+- O workflow foi **enviado** ao repositório, mas seu acionamento e aprovação **não foram confirmados**. Conferir Actions antes de afirmar sucesso; o GitHub pode bloquear workflows novos em forks até habilitação.
+
 ## 3. Separação dos sistemas
 
 - **Escritório (este repo):** interface, renderização, integração com eventos, painel de missões e controle condicionado a autenticação.
@@ -52,6 +57,7 @@ Arquivos criados e alterados:
 | Feed de commits públicos | CÓDIGO ENVIADO | `companion/github-feed.js`; sem teste de navegador confirmado |
 | Renderer pixel art original no mobile | JÁ EXISTIA NO UPSTREAM | `webview-ui/src/office/components/OfficeCanvas.tsx` e `mobile/MobileShell.tsx`; falta testar no Android |
 | Feed no menu original | CÓDIGO ENVIADO | `PublicGitHubActivity.tsx` + `MobileMenu.tsx`; build/teste pendentes |
+| Workflow de qualidade mobile | CÓDIGO ENVIADO | `.github/workflows/office-mobile-v1.yml`; execução e resultado não confirmados |
 | Personagens com estados reais Antigravity | PENDENTE | Integrar eventos verificáveis |
 | Feed de GitHub privado | PENDENTE | Backend autenticado |
 | Integração Antigravity/Claude | PENDENTE | Verificar evento/provider disponível |
@@ -60,7 +66,7 @@ Arquivos criados e alterados:
 
 ## 5. Próxima tarefa prioritária
 
-**Validar compilação e testes da alteração no `MobileMenu` e confirmar interface do renderer original em Android.** O upstream **já tem** `OfficeCanvas`, `MobileShell`, gestos e renderização. Não duplicar o motor em `companion/`. Próxima tarefa: realizar `npm ci`, `npm run check-types`, testes pertinentes e teste de navegação em browser/Android. Verificar layout do painel em aparelhos pequenos, sobretudo altura do menu. Depois integrar estados reais por provedor autenticado.
+**Validar compilação e testes da alteração no `MobileMenu` e confirmar interface do renderer original em Android.** O upstream **já tem** `OfficeCanvas`, `MobileShell`, gestos e renderização. Não duplicar o motor em `companion/`. Próxima tarefa: verificar a execução e corrigir falhas do workflow de CI mobile; em seguida, teste de navegação no browser/Android. Verificar layout do painel em aparelhos pequenos, sobretudo altura do menu. Depois integrar estados reais por provedor autenticado.
 
 Depois:
 1. Garantir visualização mobile (viewport, toque, zoom, painéis).
