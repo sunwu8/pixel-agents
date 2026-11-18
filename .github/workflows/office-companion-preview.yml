@@ -1,5 +1,5 @@
 name: Original Pixel Office - Web Preview
-# Deployment retry after GitHub Pages source was configured (2026-11-18).
+# Deployment retry after GitHub Pages branch access was authorized (2026-11-18).
 
 on:
   push:
