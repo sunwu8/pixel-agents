@@ -129,6 +129,13 @@ Arquivos criados e alterados:
 - Commit `8719506` enviado à branch; build/testes deste commit não confirmados. Não houve edição no CineDoc.
 - Próxima etapa: observar build e deploy Pages; se Pages não estiver configurado no fork, habilitar GitHub Actions como origem na tela Settings > Pages (a configuração ainda não pôde ser alterada pelas ferramentas disponíveis).
 
+### Etapa 19 — correção da prévia travada em Loading the office (2026-11-18)
+- Pages finalmente publicou página via workflow #8 verde; usuário abriu `https://sunwu8.github.io/pixel-agents/` no Android e viu tela pixel art **Loading the office** permanentemente.
+- CAUSA IDENTIFICADA NO CÓDIGO: `webview-ui/src/transport/index.ts` só fazia bridge dos `window.message` do `browserMock` quando `import.meta.env.DEV` era true. Nas builds Pages `VITE_OFFICE_DEMO=1`, o `browserMock` carregava assets e disparava eventos, mas `WebSocketTransport` ignorava tais eventos e tentava conectar à rota inexistente `/ws` do GitHub Pages. Consequentemente `layoutReady` ficava falso e React mostrava `LoadingScene` eternamente.
+- Commit `f5777b4`: `transport/index.ts` agora usa `if (import.meta.env.DEV || isOfficePreview)`, importando flag do runtime; em prévia estática, bridge mock `message` ao transport e não chama `ws.connect()`. Runtime normal do servidor preservado.
+- Correção ainda aguardando compilação e teste de carregamento no Android; não confundir hipóteses de comportamento com validação real.
+- Próximo: confirmar workflow Pages com commit `f5777b4` e que o usuário visualiza a cena real; só então implementar agentes DEMO identificados e depois conectores reais sob autenticação.
+
 ## 3. Separação dos sistemas
 
 - **Escritório (este repo):** interface, renderização, integração com eventos, painel de missões e controle condicionado a autenticação.
