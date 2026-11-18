@@ -60,6 +60,12 @@ Arquivos criados e alterados:
 - Commit posterior ajustou ordem de imports e formatação de `PublicGitHubActivity.tsx` para tentar sanar lint e Prettier. **Novo CI ainda não aprovado/confirmado**; verificar no GitHub antes de afirmar correção.
 - Próximo marco técnico: obter CI verde, tratar dependências com cuidado sem `npm audit fix --force`, então validar acesso mobile; não publicar credenciais nem expor acesso remoto sem autenticação.
 
+### Etapa 9 — preparação de preview no Android (2026-11-18)
+- Criado `.github/workflows/office-companion-preview.yml`: empacota `companion/index.html`, `companion/github-feed.js` e `webview-ui/public/office.png` em um artefato estático e tenta publicar via GitHub Pages na branch de desenvolvimento.
+- **Não há URL de Pages verificada ainda.** Pages pode exigir habilitação em Settings > Pages e autorização para workflows Actions. Só informar a URL após deploy e acesso confirmados.
+- Essa preview é **apenas o laboratório demonstrativo** de `companion/` e **não é o renderer vivo da aplicação React original**. Não inclui tokens nem mostra o estado real dos agentes.
+- CI do commit anterior: execução `44266702807` registrada como `pending` na consulta; conclusão não confirmada.
+
 ## 3. Separação dos sistemas
 
 - **Escritório (este repo):** interface, renderização, integração com eventos, painel de missões e controle condicionado a autenticação.
@@ -83,12 +89,12 @@ Arquivos criados e alterados:
 | Personagens com estados reais Antigravity | PENDENTE | Integrar eventos verificáveis |
 | Feed de GitHub privado | PENDENTE | Backend autenticado |
 | Integração Antigravity/Claude | PENDENTE | Verificar evento/provider disponível |
-| Acesso Android e deploy | PENDENTE | Ambiente, segurança e testes |
+| Acesso Android e deploy | PREVIEW PREPARADA | Workflow GitHub Pages enviado; publicação e acesso ainda não confirmados |
 | Aprovações remotas de agentes | FORA DA V1 | Exige integração e permissões explícitas |
 
 ## 5. Próxima tarefa prioritária
 
-**Verificar novo CI após ajuste de imports/formatação, corrigir falhas demonstradas e validar o Pixel Agents original no navegador Android.** O upstream **já tem** `OfficeCanvas`, `MobileShell`, gestos e renderização. Não duplicar o motor em `companion/`. Próxima tarefa: verificar a execução e corrigir falhas do workflow de CI mobile; em seguida, teste de navegação no browser/Android. Verificar layout do painel em aparelhos pequenos, sobretudo altura do menu. Depois integrar estados reais por provedor autenticado.
+**Verificar os runs de CI e do workflow de preview, corrigir falhas demonstradas, validar o link do laboratório no Android e depois preparar acesso seguro à interface React original.** O upstream **já tem** `OfficeCanvas`, `MobileShell`, gestos e renderização. Não duplicar o motor em `companion/`. Próxima tarefa: verificar a execução e corrigir falhas do workflow de CI mobile; em seguida, teste de navegação no browser/Android. Verificar layout do painel em aparelhos pequenos, sobretudo altura do menu. Depois integrar estados reais por provedor autenticado.
 
 Depois:
 1. Garantir visualização mobile (viewport, toque, zoom, painéis).
