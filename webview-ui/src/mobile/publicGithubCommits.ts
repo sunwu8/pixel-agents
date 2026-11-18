@@ -21,6 +21,6 @@ export function parsePublicCommits(payload: unknown): PublicCommit[] {
 export function publicCommitTitle(entry: PublicCommit): string {
   const message = entry.commit?.message;
   return typeof message === 'string'
-    ? message.split('\n')[0].slice(0, 100) || entry.sha.slice(0, 8)
+    ? message.split('\n')[0]?.slice(0, 100) || entry.sha.slice(0, 8)
     : entry.sha.slice(0, 8);
 }
