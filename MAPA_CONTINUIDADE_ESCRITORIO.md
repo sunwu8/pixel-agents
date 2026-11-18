@@ -43,6 +43,11 @@ Arquivos criados e alterados:
 - Ajustado `webview-ui/src/mobile/PublicGitHubActivity.tsx` para painel de GitHub **recolhido por padrão**, com `aria-expanded` e consulta apenas após abrir, a fim de poupar espaço no menu mobile.
 - Validação desse ajuste via CI/Android ainda pendente; manter estado de testes não confirmados.
 
+### Etapa 6 — execução de CI e correção de formatação do feed (2026-11-18)
+- Verificada execução real de CI do fork: run `44265736482` (diversos jobs cancelados; não significa que os testes passaram). Verificada execução posterior `44265968687` inicialmente pendente. Evidência: GitHub Actions.
+- Corrigido em `webview-ui/src/mobile/PublicGitHubActivity.tsx` o separador de linhas da mensagem do commit: agora usa quebra de linha real, em vez de buscar texto literal `\\n`.
+- Não confirmar compilação ou testes aprovados sem novo resultado explícito. Alterações permanecem em branch isolada, PR #1 em rascunho.
+
 ## 3. Separação dos sistemas
 
 - **Escritório (este repo):** interface, renderização, integração com eventos, painel de missões e controle condicionado a autenticação.
@@ -71,7 +76,7 @@ Arquivos criados e alterados:
 
 ## 5. Próxima tarefa prioritária
 
-**Verificar conclusões do CI em execução, corrigir falhas demonstradas e confirmar interface do renderer original em Android.** O upstream **já tem** `OfficeCanvas`, `MobileShell`, gestos e renderização. Não duplicar o motor em `companion/`. Próxima tarefa: verificar a execução e corrigir falhas do workflow de CI mobile; em seguida, teste de navegação no browser/Android. Verificar layout do painel em aparelhos pequenos, sobretudo altura do menu. Depois integrar estados reais por provedor autenticado.
+**Verificar conclusão de CI para o último commit, corrigir falhas comprovadas e confirmar a interface original em Android.** O upstream **já tem** `OfficeCanvas`, `MobileShell`, gestos e renderização. Não duplicar o motor em `companion/`. Próxima tarefa: verificar a execução e corrigir falhas do workflow de CI mobile; em seguida, teste de navegação no browser/Android. Verificar layout do painel em aparelhos pequenos, sobretudo altura do menu. Depois integrar estados reais por provedor autenticado.
 
 Depois:
 1. Garantir visualização mobile (viewport, toque, zoom, painéis).
